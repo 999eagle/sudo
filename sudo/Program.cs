@@ -15,6 +15,11 @@ namespace sudo
 
 		static void Main(string[] args)
 		{
+			if (args.Length == 0)
+			{
+				Console.WriteLine("Usage: sudo <command> [arg1 [arg2 [arg3 [...]]]");
+				return;
+			}
 			var id = Process.GetCurrentProcess().Id.ToString();
 			var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "sudoRun.exe");
 			var subProcInfo = new ProcessStartInfo(path, id + " " + String.Join(" ", args.Select(a => a.Contains(" ") ? $"\"{a}\"" : a)))
