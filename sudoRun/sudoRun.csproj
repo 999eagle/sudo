@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3526236A-8942-40E3-A8EB-A2365C16EC67}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>sudo</RootNamespace>
-    <AssemblyName>sudo</AssemblyName>
+    <ProjectGuid>{92D2E2ED-E794-425D-B365-A05C72CA776B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>sudoRun</RootNamespace>
+    <AssemblyName>sudoRun</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,12 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\sudoRun\sudoRun.csproj">
-      <Project>{92d2e2ed-e794-425d-b365-a05c72ca776b}</Project>
-      <Name>sudoRun</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
