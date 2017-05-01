@@ -20,13 +20,24 @@ namespace sudo
 				Console.WriteLine("Usage: sudo <command> [arg1 [arg2 [arg3 [...]]]");
 				return;
 			}
-			var id = Process.GetCurrentProcess().Id.ToString();
-			var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "sudoRun.exe");
-			var subProcInfo = new ProcessStartInfo(path, id + " " + String.Join(" ", args.Select(a => a.Contains(" ") ? $"\"{a}\"" : a)))
+			ProcessStartInfo info;
+			if (!IsElevated)
 			{
-				Verb = "runas"
-			};
-			var subProc = Process.Start(subProcInfo);
+				var id = Process.GetCurrentProcess().Id.ToString();
+				var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "sudoRun.exe");
+				info = new ProcessStartInfo(path, id + " " + String.Join(" ", args.Select(a => a.Contains(" ") ? $"\"{a}\"" : a)))
+				{
+					Verb = "runas"
+				};
+			}
+			else
+			{
+				info = new ProcessStartInfo(args[0], String.Join(" ", args.Skip(1).Select(a => a.Contains(" ") ? $"\"{a}\"" : a)))
+				{
+					UseShellExecute = false
+				};
+			}
+			var subProc = Process.Start(info);
 			subProc.WaitForExit();
 		}
 	}
