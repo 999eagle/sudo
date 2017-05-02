@@ -51,11 +51,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\sudoRun\sudoRun.csproj">
-      <Project>{92d2e2ed-e794-425d-b365-a05c72ca776b}</Project>
-      <Name>sudoRun</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
