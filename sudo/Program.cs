@@ -16,7 +16,12 @@ namespace sudo
 	{
 		static bool IsElevated { get => WindowsIdentity.GetCurrent().Owner.IsWellKnown(WellKnownSidType.BuiltinAdministratorsSid); }
 
-		static string EscapeArg(string arg) => arg.Contains(" ") ? $"\"{arg}\"" : arg;
+		static string EscapeArg(string arg)
+		{
+			arg = arg.Replace("\"", "\\\"");
+			arg = arg.Contains(" ") ? $"\"{arg}\"" : arg;
+			return arg;
+		}
 
 		static void Main(string[] args)
 		{
