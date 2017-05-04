@@ -26,7 +26,11 @@ namespace sudo
 			}
 			var parent = Interop.GetParentProcess();
 			// if we have a parent, close our console and attach to the parent's
-			if (parent != null && (!Interop.FreeConsole() || !Interop.AttachConsole(parent.Id))) return;
+			if (parent != null)
+			{
+				Interop.FreeConsole();
+				if (!Interop.AttachConsole(parent.Id) && !Interop.AllocConsole()) return;
+			}
 			ProcessStartInfo info;
 			var commandArgsString = String.Join(" ", args.Skip(1).Select(EscapeArg));
 			if (!IsElevated)
@@ -67,6 +71,9 @@ namespace sudo
 
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern bool FreeConsole();
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool AllocConsole();
 
 		[DllImport("ntdll.dll")]
 		public static extern int NtQueryInformationProcess(IntPtr processHandle, int processInformationClass, ref ProcessBasicInformation processInformation, int processInformationLength, out int returnLength);
