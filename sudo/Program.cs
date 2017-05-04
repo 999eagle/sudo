@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -48,13 +49,27 @@ namespace sudo
 					UseShellExecute = false
 				};
 			}
-			var subProc = Process.Start(info);
-			subProc.WaitForExit();
+			try
+			{
+				var subProc = Process.Start(info);
+				subProc.WaitForExit();
+			}
+			catch (Win32Exception ex) when (ex.ErrorCode == Interop.HRESULT_E_FAIL && ex.NativeErrorCode == Interop.W32_ERROR_FILE_NOT_FOUND)
+			{
+				var color = (Console.ForegroundColor, Console.BackgroundColor);
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.BackgroundColor = ConsoleColor.Black;
+				Console.WriteLine($"The term '{info.FileName}' was not recognized as the name of an executable or file. Please check the spelling and try again.");
+				(Console.ForegroundColor, Console.BackgroundColor) = color;
+			}
 		}
 	}
 
 	class Interop
 	{
+		public const int HRESULT_E_FAIL = unchecked((int)0x80004005);
+		public const int W32_ERROR_FILE_NOT_FOUND = unchecked((int)0x00000002);
+
 		[StructLayout(LayoutKind.Sequential)]
 		public struct ProcessBasicInformation
 		{
